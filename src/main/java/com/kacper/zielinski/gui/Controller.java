@@ -7,7 +7,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Controller {
@@ -39,6 +41,7 @@ public class Controller {
     protected void downloadAll(ActionEvent event) {
         // TODO allow to choose between movie and mp3 etc.
         youtubeUrls.forEach(this::dummyDownloadOfMp3);
+        youtubeUrls.clear();
     }
 
     private void dummyDownloadOfMp3(String url) {
@@ -54,7 +57,28 @@ public class Controller {
         // TODO display more info about failure/success
 
         try {
-            Runtime.getRuntime().exec(command);
+            Process process = Runtime.getRuntime().exec(command);
+
+            // Get input streams
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            BufferedReader stdError = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+
+            // TODO two reading threads ??
+            // or TODO progressbar based on String...
+            // TODO output progress on some listview...
+            // Read command standard output
+            String s;
+            System.out.println("Standard output: ");
+            while ((s = stdInput.readLine()) != null) {
+                System.out.println(s);
+            }
+
+            // Read command errors
+            System.out.println("Standard error: ");
+            while ((s = stdError.readLine()) != null) {
+                System.out.println(s);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
