@@ -1,7 +1,6 @@
 package com.kacper.zielinski.gui;
 
 import com.kacper.zielinski.gui.infrastructure.DownloadExecutorDispatcher;
-import com.kacper.zielinski.gui.infrastructure.DownloadExecutor;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,7 +10,6 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Controller {
 
@@ -45,14 +43,8 @@ public class Controller {
     protected void downloadAll(ActionEvent event) {
         // TODO start it within new Thread :)
         // TODO allow to choose between movie and mp3 etc.
-        List<Thread> threadList = new ArrayList<>();
-        youtubeUrls.forEach(url -> threadList.add(new Thread(new DownloadExecutor(url))));
-
-        DownloadExecutorDispatcher dispatcher = new DownloadExecutorDispatcher(threadList);
+        DownloadExecutorDispatcher dispatcher = new DownloadExecutorDispatcher(youtubeUrls);
         dispatcher.dispatch();
-
-        // TODO clear this list only when all was deleted or do sth else (just skip downloaded..)
-        youtubeUrls.clear();
     }
 
 }
