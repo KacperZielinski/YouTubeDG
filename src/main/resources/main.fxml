@@ -11,8 +11,11 @@
     <TextField fx:id="newUrl" GridPane.columnIndex="0" GridPane.rowIndex="0" />
     <Button onAction="#addYoutubeUrl" text="Add" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-    <ListView fx:id="youtubeListView" prefHeight="200.0" prefWidth="200.0"
+    <ListView fx:id="youtubeListView" prefHeight="200.0" prefWidth="400.0"
               GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-    <Button onAction="#downloadAll" text="Download" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+    <Button onAction="#downloadAll" text="Download" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+    <ProgressBar fx:id="overallProgressBar" progress="0" prefWidth="400.0"
+                 GridPane.columnIndex="0" GridPane.rowIndex="3"/>
 
 </GridPane>

@@ -19,6 +19,9 @@ public class Controller {
     private TextField newUrl;
 
     @FXML
+    private ProgressBar overallProgressBar;
+
+    @FXML
     private ListView<String> youtubeListView;
 
     private static final ObservableList<String> youtubeUrls = FXCollections.observableList(new ArrayList<>());
