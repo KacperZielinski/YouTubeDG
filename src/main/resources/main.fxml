@@ -13,7 +13,7 @@
 
     <ListView fx:id="youtubeListView" prefHeight="200.0" prefWidth="400.0"
               GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-    <Button onAction="#downloadAll" text="Download" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    <Button onAction="#downloadAll" text="Download" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
     <ProgressBar fx:id="overallProgressBar" progress="0" prefWidth="400.0"
                  GridPane.columnIndex="0" GridPane.rowIndex="3"/>
