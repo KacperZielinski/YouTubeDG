@@ -4,9 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class DownloadExecutor implements Runnable {
+public class DownloadExecutor extends Thread {
 
     private final String youtubeUrl;
+
+    private Double progress = 0.0;
 
     public DownloadExecutor(String youtubeUrl) {
         this.youtubeUrl = youtubeUrl;
@@ -17,7 +19,7 @@ public class DownloadExecutor implements Runnable {
         dummyDownloadOfMp3(youtubeUrl);
     }
 
-    private void dummyDownloadOfMp3(String url) {
+    public void dummyDownloadOfMp3(String url) {
         // TODO check version of youtube-dl, ffmpeg
         // TODO find youtube-dl path..
         // TODO new dialog with settings, autodetection of youtube-dl or just provide path
@@ -36,7 +38,7 @@ public class DownloadExecutor implements Runnable {
 
             // Get input streams
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            BufferedReader stdError = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+//            BufferedReader stdError = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 
             // TODO two reading threads ??
             // or TODO progressbar based on String...
@@ -46,16 +48,39 @@ public class DownloadExecutor implements Runnable {
             System.out.println("Standard output: ");
             while ((s = stdInput.readLine()) != null) {
                 System.out.println(s);
+
+                if(s.startsWith("[download] ") && s.contains("%") && s.length() > 16) {
+                    String progressStr = s.substring(11, 16);
+                    System.out.println("--> Progress is 11,16:::: " + progressStr);
+
+                    if(progressStr.contains("%")) {
+                        progressStr = "100";
+                    }
+
+                    progress = Double.parseDouble(progressStr);
+
+                    System.out.println("Parsed to: " + progress);
+
+                    //   6.5
+                    //  51.9
+                    // 100.0
+                    // 100%
+                }
+
             }
 
-            // Read command errors
-            System.out.println("Standard error: ");
-            while ((s = stdError.readLine()) != null) {
-                System.out.println(s);
-            }
+//            // Read command errors
+//            System.out.println("Standard error: ");
+//            while ((s = stdError.readLine()) != null) {
+//                System.out.println(s);
+//            }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Double getProgress() {
+        return progress;
     }
 }

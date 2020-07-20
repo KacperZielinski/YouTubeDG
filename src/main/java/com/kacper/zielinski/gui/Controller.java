@@ -10,6 +10,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
 
@@ -32,7 +33,7 @@ public class Controller {
     @FXML
     protected void addYoutubeUrl(ActionEvent event) {
         youtubeUrls.add(newUrl.getText());
-        youtubeUrls.forEach(System.out::println);
+//        youtubeUrls.forEach(System.out::println);
 
         // TODO refactor....
         youtubeListView.setItems(youtubeUrls);
@@ -43,8 +44,14 @@ public class Controller {
     protected void downloadAll(ActionEvent event) {
         // TODO start it within new Thread :)
         // TODO allow to choose between movie and mp3 etc.
-        DownloadExecutorDispatcher dispatcher = new DownloadExecutorDispatcher(youtubeUrls);
-        dispatcher.dispatch();
-    }
+        List<String> youtubeUrlsCopy = new ArrayList<>(youtubeUrls);
 
+        new Thread(() -> {
+            DownloadExecutorDispatcher dispatcher = new DownloadExecutorDispatcher(youtubeUrlsCopy, overallProgressBar);
+            dispatcher.dispatch();
+        }).start();
+
+        // TODO clear this list only when all was deleted or do sth else (just skip downloaded..)
+        youtubeUrls.clear();
+    }
 }
