@@ -1,21 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kacper.zielinski.gui.Controller">
+    <children>
+        <MenuBar>
+            <menus>
+                <Menu fx:id="fileMenu" text="File">
+                    <items>
+                        <MenuItem text="Test"></MenuItem>
+                    </items>
+                </Menu>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kacper.zielinski.gui.Controller">
+                <Menu fx:id="editMenu" text="Edit">
+                </Menu>
+            </menus>
+        </MenuBar>
+    </children>
 
-<!--    TODO improve layout!-->
-<!--    <gridLinesVisible>true</gridLinesVisible>-->
+    <GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
 
-    <TextField fx:id="newUrl" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-    <Button onAction="#addYoutubeUrl" text="Add" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+    <!--    TODO improve layout!-->
+    <!--    <gridLinesVisible>true</gridLinesVisible>-->
 
-    <ListView fx:id="youtubeListView" prefHeight="200.0" prefWidth="400.0"
-              GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-    <Button onAction="#downloadAll" text="Download" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <TextField fx:id="newUrl" prefWidth="380.0"
+                   GridPane.columnIndex="0" GridPane.rowIndex="1"  />
 
-    <ProgressBar fx:id="overallProgressBar" progress="0" prefWidth="400.0"
-                 GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <children>
+                <RadioButton fx:id="mp3ContentType" text="MP3  " selected="true">
+                    <toggleGroup>
+                        <ToggleGroup fx:id="contentTypeGroup" />
+                    </toggleGroup>
+                </RadioButton>
+                <RadioButton fx:id="videoContentType" text="Video" toggleGroup="$contentTypeGroup" />
+            </children>
+        </HBox>
 
-</GridPane>
+        <Button onAction="#addYoutubeUrl" text="Add" prefWidth="80.0"
+                GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+        <ListView fx:id="youtubeListView" prefHeight="240.0" prefWidth="460.0"
+                  GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="3"/>
+
+        <ProgressBar fx:id="overallProgressBar" progress="0" prefWidth="480.0"
+                     GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="3" />
+
+        <Button onAction="#downloadAll" text="Download" prefWidth="80.0"
+                GridPane.columnIndex="2" GridPane.rowIndex="4" />
+
+    </GridPane>
+</VBox>

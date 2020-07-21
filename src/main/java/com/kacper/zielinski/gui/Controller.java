@@ -25,18 +25,16 @@ public class Controller {
 
     private static final ObservableList<String> youtubeUrls = FXCollections.observableList(new ArrayList<>());
 
-    public Controller() {
-        // TODO set it somewhere earlier..
-        //youtubeListView.setItems(youtubeUrls);
+    public Controller() {}
+
+    @FXML
+    public void initialize() {
+        youtubeListView.setItems(youtubeUrls);
     }
 
     @FXML
     protected void addYoutubeUrl(ActionEvent event) {
         youtubeUrls.add(newUrl.getText());
-//        youtubeUrls.forEach(System.out::println);
-
-        // TODO refactor....
-        youtubeListView.setItems(youtubeUrls);
         newUrl.clear();
     }
 
