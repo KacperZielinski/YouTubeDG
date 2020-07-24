@@ -1,6 +1,6 @@
 package com.kacper.zielinski.gui;
 
-import com.kacper.zielinski.gui.infrastructure.DownloadExecutorDispatcher;
+import com.kacper.zielinski.gui.infrastructure.executor.DownloadExecutorDispatcher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,14 +42,14 @@ public class Controller {
     protected void downloadAll(ActionEvent event) {
         // TODO start it within new Thread :)
         // TODO allow to choose between movie and mp3 etc.
-        List<String> youtubeUrlsCopy = new ArrayList<>(youtubeUrls);
+        List<String> youtubeUrlsCopy = List.copyOf(youtubeUrls);
 
         new Thread(() -> {
             DownloadExecutorDispatcher dispatcher = new DownloadExecutorDispatcher(youtubeUrlsCopy, overallProgressBar);
             dispatcher.dispatch();
         }).start();
 
-        // TODO clear this list only when all was deleted or do sth else (just skip downloaded..)
+        // TODO clear this list only when all was deleted or do sth else (just skip downloaded..), typical wait(), notify() pattern
         youtubeUrls.clear();
     }
 }
