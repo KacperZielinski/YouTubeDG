@@ -14,7 +14,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         // TODO put it somewhere else (constants)
         Parent root = FXMLLoader.load(getClass().getResource("/main.fxml"));
-        primaryStage.setTitle("YouTubeDG 0.1.1");
+        primaryStage.setTitle("YouTubeDG 0.1.2");
         primaryStage.setScene(new Scene(root, 640, 380));
         primaryStage.setResizable(false);
         primaryStage.show();

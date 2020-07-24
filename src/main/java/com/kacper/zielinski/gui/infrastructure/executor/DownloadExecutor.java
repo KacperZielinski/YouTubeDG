@@ -1,25 +1,31 @@
 package com.kacper.zielinski.gui.infrastructure.executor;
 
+import com.kacper.zielinski.gui.domain.content.YoutubeContent;
+import com.kacper.zielinski.gui.domain.content.YoutubeContentType;
+import com.kacper.zielinski.gui.infrastructure.executor.command.SimpleMp3;
+import com.kacper.zielinski.gui.infrastructure.executor.command.SimpleVideo;
+import com.kacper.zielinski.gui.infrastructure.executor.command.YoutubeDlCommand;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class DownloadExecutor extends Thread {
 
-    private final String youtubeUrl;
+    private final YoutubeContent youtubeContent;
 
     private Double progress = 0.0;
 
-    public DownloadExecutor(String youtubeUrl) {
-        this.youtubeUrl = youtubeUrl;
+    public DownloadExecutor(YoutubeContent youtubeContent) {
+        this.youtubeContent = youtubeContent;
     }
 
     @Override
     public void run() {
-        dummyDownloadOfMp3(youtubeUrl);
+        dummyDownloadOfMp3(youtubeContent);
     }
 
-    public void dummyDownloadOfMp3(String url) {
+    public void dummyDownloadOfMp3(YoutubeContent youtubeContent) {
         // TODO check version of youtube-dl, ffmpeg
         // TODO find youtube-dl path..
         // TODO new dialog with settings, autodetection of youtube-dl or just provide path
@@ -27,8 +33,10 @@ public class DownloadExecutor extends Thread {
 
         // TODO output folder
         // TODO user can choose title and more...
-        String command = youtubeDlPath + "youtube-dl.exe --newline -i -o \"C:\\Users\\Kacper\\Documents\\YouTubeDG\\%(title)s.%(ext)s\" -x --audio-format mp3 --ignore-config --hls-prefer-native --audio-quality 0 " + url;
+        // TODO determine user system Linux or Windows
 
+        String outputDirectory = "-o \"C:\\Users\\Kacper\\Documents\\YouTubeDG\\%(title)s.%(ext)s\" ";
+        String command = youtubeDlPath + "youtube-dl.exe " + outputDirectory + determineContentType(youtubeContent).getCommand(youtubeContent.getContentUrl());
         System.out.println(command);
 
         // TODO display more info about failure/success
@@ -78,6 +86,10 @@ public class DownloadExecutor extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private YoutubeDlCommand determineContentType(YoutubeContent youtubeContent) {
+        return YoutubeContentType.MP3.equals(youtubeContent.getContentType()) ? new SimpleMp3() : new SimpleVideo();
     }
 
     public Double getProgress() {

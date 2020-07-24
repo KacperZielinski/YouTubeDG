@@ -1,5 +1,6 @@
 package com.kacper.zielinski.gui.infrastructure.executor;
 
+import com.kacper.zielinski.gui.domain.content.YoutubeContent;
 import javafx.scene.control.ProgressBar;
 
 import java.util.ArrayList;
@@ -7,19 +8,19 @@ import java.util.List;
 
 public class DownloadExecutorDispatcher {
 
-    private List<String> youtubeUrls;
+    private List<YoutubeContent> youtubeContentList;
     private List<DownloadExecutor> threadList = new ArrayList<>();
     private ProgressBar overallProgressBar;
 
-    public DownloadExecutorDispatcher(List<String> youtubeUrls, ProgressBar overallProgressBar) {
-        this.youtubeUrls = youtubeUrls;
+    public DownloadExecutorDispatcher(List<YoutubeContent> youtubeContentList, ProgressBar overallProgressBar) {
+        this.youtubeContentList = youtubeContentList;
         this.overallProgressBar = overallProgressBar;
     }
 
     public void dispatch() {
         // TODO just use some thread pool...
-        youtubeUrls.forEach(url -> threadList.add(new DownloadExecutor(url)));
-        System.out.println("GIVEN SIZE IS: " + youtubeUrls.size());
+        youtubeContentList.forEach(url -> threadList.add(new DownloadExecutor(url)));
+        System.out.println("GIVEN SIZE IS: " + youtubeContentList.size());
         // TODO implement dispatch logic.
 
         // TODO move it somewhere else..
@@ -29,13 +30,16 @@ public class DownloadExecutorDispatcher {
 
             while(overallStatus < 100 && tasksCount > 0) {
                 overallStatus = threadList.stream().mapToDouble(DownloadExecutor::getProgress).sum() / tasksCount;
-                overallProgressBar.setProgress(overallStatus / 100);
 
-                System.out.println("overallStatus " + overallStatus);
+                while (overallStatus == 0) {
+                    overallStatus = threadList.stream().mapToDouble(DownloadExecutor::getProgress).sum() / tasksCount;
+                }
+
+                overallProgressBar.setProgress(overallStatus / 100);
             }
 
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

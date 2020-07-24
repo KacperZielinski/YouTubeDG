@@ -4,6 +4,6 @@ public class SimpleVideo implements YoutubeDlCommand {
 
     @Override
     public String getCommand(String url) {
-        return "";
+        return url;
     }
 }
