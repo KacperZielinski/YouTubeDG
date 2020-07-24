@@ -25,17 +25,16 @@ public class DownloadExecutorDispatcher {
 
         // TODO move it somewhere else..
         Thread progressIndicator = new Thread(() -> {
-            double overallStatus = 0;
+            double overallStatus = 0.0;
             double tasksCount = threadList.size();
 
             while(overallStatus < 100 && tasksCount > 0) {
-                overallStatus = threadList.stream().mapToDouble(DownloadExecutor::getProgress).sum() / tasksCount;
+                double progress = threadList.stream().mapToDouble(DownloadExecutor::getProgress).sum();
 
-                while (overallStatus == 0) {
-                    overallStatus = threadList.stream().mapToDouble(DownloadExecutor::getProgress).sum() / tasksCount;
+                if (progress >= 0.1) {
+                    overallStatus = progress / tasksCount;
+                    overallProgressBar.setProgress(overallStatus / 100);
                 }
-
-                overallProgressBar.setProgress(overallStatus / 100);
             }
 
             try {
@@ -44,6 +43,7 @@ public class DownloadExecutorDispatcher {
                 e.printStackTrace();
             }
 
+            threadList.clear();
             overallProgressBar.setProgress(0.0);
         });
 
@@ -59,7 +59,5 @@ public class DownloadExecutorDispatcher {
                 e.printStackTrace();
             }
         }
-
-//        threadList.clear();
     }
 }
