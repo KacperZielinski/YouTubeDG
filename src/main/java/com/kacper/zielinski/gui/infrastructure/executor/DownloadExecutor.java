@@ -1,4 +1,4 @@
-package com.kacper.zielinski.gui.infrastructure;
+package com.kacper.zielinski.gui.infrastructure.executor;
 
 import java.io.BufferedReader;
 import java.io.IOException;

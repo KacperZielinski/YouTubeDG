@@ -1,4 +1,4 @@
-package com.kacper.zielinski.gui.infrastructure;
+package com.kacper.zielinski.gui.infrastructure.executor;
 
 import javafx.scene.control.ProgressBar;
 
