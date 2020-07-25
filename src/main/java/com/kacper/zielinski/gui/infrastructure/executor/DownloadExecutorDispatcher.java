@@ -28,22 +28,21 @@ public class DownloadExecutorDispatcher {
             double overallStatus = 0.0;
             double tasksCount = threadList.size();
 
-            while(overallStatus < 100 && tasksCount > 0) {
-                double progress = threadList.stream().mapToDouble(DownloadExecutor::getProgress).sum();
-
-                if (progress >= 0.1) {
-                    overallStatus = progress / tasksCount;
-                    overallProgressBar.setProgress(overallStatus / 100);
-                }
-            }
-
             try {
+                while(overallStatus < 100 && tasksCount > 0) {
+                    double progress = threadList.stream().mapToDouble(DownloadExecutor::getProgress).sum();
+
+                    if (progress >= 0.1) {
+                        overallStatus = progress / tasksCount;
+                        overallProgressBar.setProgress(overallStatus / 100);
+                    }
+                    Thread.sleep((long) (tasksCount * 200));
+                }
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            threadList.clear();
             overallProgressBar.setProgress(0.0);
         });
 
@@ -59,5 +58,7 @@ public class DownloadExecutorDispatcher {
                 e.printStackTrace();
             }
         }
+
+        threadList.clear();
     }
 }
